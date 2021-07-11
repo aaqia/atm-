@@ -1,0 +1,55 @@
+package com.hp.controller;
+
+import com.hp.bean.Customer;
+import com.hp.bean.CustomerData;
+import com.hp.service.CustomerService;
+import com.hp.util.TextUtil;
+
+import java.util.List;
+import java.util.Scanner;
+    //atm 取款机入口
+public class AtmMain {
+
+    private  static String cardid;// 提取成为常量
+    private  static String cardPwd;
+    private  static CustomerService customerService;
+
+    public static void main(String[] args) {
+        customerService = new CustomerService();
+        // 测试 客户类的 数据   // 作业1: 对 manager管理类 做出  单例模式. 并测试 是否数据初始了.
+        //CustomerData customerData = CustomerData.getInstance();
+        //List<Customer> customerList = customerData.getCustomerList();
+      //  for (Customer customer : customerList) {
+      //      System.out.println("customer = " + customer);
+      //  }
+        //是一个阶段
+        TextUtil.welcome();
+        int i = 0;
+        while(i<6){  //如果输入超过5次就会终止程序
+            //输入账户密码一个阶段
+            doWritePassword();
+            //校检角色  账户密码的正确性
+            doCheckPassword(cardid,cardPwd);
+            i++;
+        }
+    }
+
+        //判断角色和判断密码
+    private static void doCheckPassword(String cardid, String  cardPwd) {
+        // 1. 先校验角色,  判断 cardid 的长度.
+        if (cardid.length()==8) { // 客户
+            // 校验密码
+            customerService.checkPwd(cardid,cardPwd);
+        }
+    }
+
+    private static void doWritePassword(){
+        System.out.println("请输入卡号");
+        Scanner sc = new Scanner(System.in);
+        cardid = sc.nextLine();
+        System.out.println("cardid = " + cardid);
+        System.out.println("请输入密码");
+        cardPwd = sc.nextLine();
+        System.out.println("cardPwd = " + cardPwd);
+    }
+}
